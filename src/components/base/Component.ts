@@ -41,7 +41,7 @@ export abstract class Component<T> {
     }
 
     // Установить изображение с алтернативным текстом
-    protected setImage(element: HTMLImageElement, src: string, alt?: string) {
+    protected setImage(element: HTMLImageElement, src: string, alt?: string):void {
         if (element) {
             element.src = src;
             if (alt) {

@@ -2,8 +2,6 @@ import {Component} from "./base/Component";
 import {ICard, ICardActions} from "../types";
 import {ensureElement} from "../utils/utils";
 
-console.log(`.card__title`);
-
 export class Card extends Component<ICard> {
     protected _title: HTMLElement;
     protected _image?: HTMLImageElement;
@@ -14,8 +12,7 @@ export class Card extends Component<ICard> {
     protected _index?: HTMLElement;
     protected _titleBtn?: string;
 
-
-    constructor(container: HTMLElement, actions?: ICardActions) {
+        constructor(container: HTMLElement, actions?: ICardActions) {
         super(container);
 
         this._title = ensureElement<HTMLElement>(`.card__title`, container);

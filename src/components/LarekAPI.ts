@@ -29,9 +29,9 @@ export class LarekAPI extends Api implements IProductAPI {
         return this.get('/product').then((data: ApiListResponse<IProductItem>) =>
             data.items.map((item) => ({
                 ...item,
-                image: this.cdn + item.image
+                image: this.cdn + item.image                
             }))
-        );
+        );        
     }
 
     orderProduct(order: IOrder): Promise<IOrderResult> {
