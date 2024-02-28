@@ -11,7 +11,7 @@ export class AppState extends Model<IAppState> {
     catalog: IProductItem[];
     loading: boolean;
     order: IOrder = {
-        payment: '',    
+        payment: 'online',    
         address: '',
         email: '',
         phone: '',
@@ -80,7 +80,7 @@ export class AppState extends Model<IAppState> {
         }
     }
 
-    getTotal(): number {
+/*  getTotal(): number {
 		this.order.total = this.basket.reduce((a, b) => {
 			return a + b.price;
 		}, 0);
@@ -88,6 +88,10 @@ export class AppState extends Model<IAppState> {
 			return a + b.price;
 		}, 0);
 	}
+*/
+    getTotal(): number {
+        return this.basket.reduce((total, item) => total + item.price, 0);
+    }
 
     validationContacts(){
         const errors: typeof this.formErrors = {};

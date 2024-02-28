@@ -14,9 +14,9 @@ export class Card extends Component<ICard> {
 
         constructor(container: HTMLElement, actions?: ICardActions) {
         super(container);
-
+console.log(container);
         this._title = ensureElement<HTMLElement>(`.card__title`, container);
-        this._image = ensureElement<HTMLImageElement>(`.card__image`, container);
+        this._image = container.querySelector(`.card__image`);
         this._button = container.querySelector(`.card__button`);
         this._description = container.querySelector(`.card__text`);
         this._category = container.querySelector(`.card__category`);
@@ -63,7 +63,7 @@ export class Card extends Component<ICard> {
     get title(): string {
         return this._title.textContent || '';
     }
-
+    
     set image(value: string) {
         this.setImage(this._image, value, this.title)
     }
@@ -88,7 +88,7 @@ export class Card extends Component<ICard> {
 		} else if (value === 'другое') {
 			this._category.classList.add('card__category_other');
 		} else if (value === 'дополнительное') {
-			this._category.classList.add('card__category_optional');
+			this._category.classList.add('card__category_additional');
 		} else if (value === 'кнопка') {
 			this._category.classList.add('card__category_button');
 		} else if (value === 'хард-скил') {
@@ -120,5 +120,3 @@ export class Card extends Component<ICard> {
         return this._index.textContent || '';
     };
 }
-
-

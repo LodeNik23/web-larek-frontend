@@ -3,7 +3,7 @@
 
 .basket {
   @include mixins.flex(column);
-  gap: 2rem;
+  gap: 2rem;  
   height: 100%;
 
   &__list {

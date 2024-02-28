@@ -68,7 +68,8 @@ events.on<CatalogChangeEvent>('items:changed', () => {
 });
 
 // Отправлена форма заказа
-events.on('order:submit', () => {
+events.on('contacts:submit', () => {
+    
     api.orderProduct(appData.order)
         .then((result) => {
             const success = new Success(cloneTemplate(successTemplate), {
@@ -93,7 +94,7 @@ events.on('order:submit', () => {
 
 // Изменилось состояние валидации формы
 events.on('formErrors:change', (errors: Partial<IOrder>) => {
-    const {email, phone, payment, address} = errors;
+    const {payment, address, email, phone} = errors;
     contact.valid = !email && !phone;
     contact.errors = Object.values({phone, email}).filter(i => !!i).join('; ');
     delivery.valid = !payment && !address;   
@@ -134,8 +135,26 @@ events.on('basket:open', () => {
 
 // Изменения в корзине, все пересчитать
 events.on('basket:changed', (items: IProductItem[]) => {
-    
+
     basket.items = items.map((item, index) => {
+        const card = new Card(cloneTemplate(cardBasketTemplate), {
+            onClick: () => {
+                events.emit('product:delete', item);
+            },
+        });
+        return card.render({
+            index: (index + 1).toString(),
+            title: item.title,
+            price: item.price,
+        });
+    });
+
+    const total = items.reduce((total, item) => total + item.price, 0);
+    appData.order.total = total;
+    basket.total = total;
+    basket.buttonBlocked(total === 0); 
+}); 
+ /*   basket.items = items.map((item, index) => {
         const card = new Card(cloneTemplate(cardBasketTemplate), {
             onClick: () => {
                 events.emit('product:delete', item);
@@ -149,14 +168,21 @@ events.on('basket:changed', (items: IProductItem[]) => {
         });
     });
 
-//        const total = items.reduce((total, item)=>{
-//            return total + item.price;}, 0);
-//    basket.total = total;
+        const total = items.reduce((total, item)=>{
+            return total + item.price;}, 0);
 
-    basket.total = appData.getTotal();
-    appData.order.total = appData.getTotal();
-    basket.buttonBlocked(basket.total === 0);          
-    });
+        basket.total = total;
+        console.log("indeXX",total);
+        basket.buttonBlocked(total === 0); 
+    });  
+*/
+
+ //   basket.total = appData.getTotal();
+ //   appData.order.total = appData.getTotal();
+  //       basket.buttonBlocked(total === 0);          
+  //  });
+// console.log("totl", basket.total);
+// console.log("app", appData.basket.length);
 
 // Счетчик элементов в корзине.
 
@@ -175,7 +201,7 @@ events.on('preview:changed', (item: IProductItem) => {
     const card = new Card(cloneTemplate(cardPreviewTemplate),{
         onClick:()=>{
             events.emit('product:toggle',item);
-            card.titleBtn = appData.basket.indexOf(item)<0?'Оплатить':'Убрать'}
+            card.titleBtn = appData.basket.indexOf(item)<0?'В корзину':'Убрать'}
         });       
 
         modal.render({
@@ -185,7 +211,7 @@ events.on('preview:changed', (item: IProductItem) => {
                 image: item.image,
                 price: item.price,
                 description: item.description,
-                titleBtn:appData.basket.indexOf(item)<0?'Оплатить':'Убрать',
+                titleBtn:appData.basket.indexOf(item)<0?'В корзину':'Убрать',
             })
         });
 });    

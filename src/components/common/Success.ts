@@ -26,6 +26,6 @@ export class Success extends Component<ISuccess> {
     }
 
     set descriptionTotl(value:string){
-        this._descriptionTotl.textContent='Списано ${value} синапсов';
+        this._descriptionTotl.textContent=`Списано ${value} синапсов`;
     }
 }
